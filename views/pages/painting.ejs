@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/header.ejs') %>
+            <div class="container">
+                <h2 style="text-align: center;">
+                    <%= painting.painting_name %>
+                </h2>
+                <div class="imgDescriptionFlex">
+                    <div class="paintingImgContainer">
+                        <img src="<%= painting.painting_url %>" alt="">
+                    </div>
+                    <div class="description">
+                        <p>
+                            <%= painting.description %>
+                        </p>
+                        <div>
+                            <button>Edit Details</button>
+                            <button>Delete painting</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </body>
+
+</html>

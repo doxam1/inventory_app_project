@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/header.ejs') %>
+            <h1>All Painters</h1>
+            <div class="container allPainters">
+                <% locals.painters.forEach((painter, index)=> { %>
+                    <div class="painterDiv">
+                        <h3>
+                            <%= painter.name %>
+                        </h3>
+                        <div class="imgContainer"><img src="<%= painter.url %>" alt="the painter" width="150px"></div>
+                    </div>
+                    <% }) %>
+            </div>
+    </body>
+
+</html>

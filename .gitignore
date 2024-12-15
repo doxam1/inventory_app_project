@@ -1,0 +1,5 @@
+.env
+node_modules
+/public/style.scss
+/db/populateDb.js
+needed_tables.ods

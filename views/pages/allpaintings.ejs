@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/header.ejs') %>
+            <h1>All Paintings</h1>
+            <div class="container allPaintings">
+                <% locals.paintings.forEach((painting, index)=> { %>
+
+                    <div class="paintDiv">
+                        <a href="paintings/<%= index %>">
+                            <h3>
+                                <%= painting.painting_name %>
+                            </h3>
+                        </a>
+                        <h4>
+                            painter_id: <%= painting.painter_id %>, <%= painting.year %>
+                        </h4>
+                        <div class="imgContainer"><img src="<%=painting.painting_url %>" alt="the painting"
+                                width="150px"></div>
+
+                    </div>
+                    <% }) %>
+            </div>
+    </body>
+
+</html>
