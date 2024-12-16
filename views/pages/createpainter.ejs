@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/header.ejs') %>
+            <h3> Add New Painter </h3>
+            <div class="errors">
+                <% if (locals.errors && locals.errors.length> 0) { %>
+                    <ul>
+                        <% errors.forEach((err)=> { %>
+                            <li>
+                                <%= err.msg %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+            </div>
+            <form action="/createpainter" method="post">
+                <label for="painerName">Enter painter name: </label>
+                <input type="text" name="name" id="painerName" required value="<%= locals.values?.name || ''%>" />
+                <label for="birth_year">Birth year: </label>
+                <input type="text" name="birth_year" id="birth_year" pattern="^\d{4}$" required
+                    value="<%= locals.values?.birth_year || '' %>" />
+                <label for="death_year"> Death year: </label>
+                <input type="text" name="death_year" id="death_year" pattern="^\d{4}$" required
+                    value="<%= locals.values?.death_year || '' %>" />
+                <label for="image_url">Image URL: </label>
+                <input type="url" name="image_url" id="image_url" pattern="^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$"
+                    required value="<%= locals.values?.image_url || '' %>" />
+                <label for="description"> Add description: </label>
+                <textarea name="description" id="description"
+                    placeholder="please add description, use chatGPT if for 60 words description." rows="10"
+                    cols="30"><%= locals.values?.description || '' %></textarea>
+                <button type="submit"> Add </button>
+            </form>
+
+    </body>
+
+</html>

@@ -14,6 +14,11 @@ async function getAllPaintingsFromDb() {
   return rows;
 }
 
+async function getAllPaintersFromDb() {
+  const { rows } = await pool.query("SELECT * FROM painters");
+  return { rows };
+}
+
 async function getAllCategoriesForPaintingByPaintingId(paintingId) {
   const { rows } = await pool.query(
     "SELECT c.name FROM categories AS c JOIN painting_categories AS pc ON c.id = pc.category_id WHERE pc.painting_id = ($1)",
@@ -22,6 +27,18 @@ async function getAllCategoriesForPaintingByPaintingId(paintingId) {
   return rows.map((row) => row.name);
 }
 
+async function addPainterToDbQuery(
+  name,
+  birth_year,
+  death_year,
+  image_url,
+  description
+) {
+  return await pool.query(
+    "INSERT INTO painters (name, birth_year, death_year, image_url, description) VALUES ($1, $2, $3, $4, $5)",
+    [name, birth_year, death_year, image_url, description]
+  );
+}
 // async function getPainterName(id) {
 //   const { rows } = await pool.query(
 //     "SELECT painters.name FROM painters INNER JOIN paintings ON paintings.painter_id = painters.id WHERE painters.id = ($1)",
@@ -32,7 +49,9 @@ async function getAllCategoriesForPaintingByPaintingId(paintingId) {
 
 module.exports = {
   getAllPaintingsFromDb,
+  getAllPaintersFromDb,
   getAllCategoriesForPaintingByPaintingId,
+  addPainterToDbQuery,
   /*   getPainterName,
    */
 };

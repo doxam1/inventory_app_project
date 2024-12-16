@@ -4,6 +4,8 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.urlencoded({ extended: false }));
+
 const { indexRouter } = require("./routes/indexRouter");
 
 app.use(express.static("public"));

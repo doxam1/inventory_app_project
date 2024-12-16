@@ -1,8 +1,12 @@
-const { painters } = require("../db/mockDB"); // to be changed to Neon db.
+// const { painters } = require("../db/mockDB"); // to be changed to Neon db.
+
+const { validationResult } = require("express-validator");
 
 const {
   getAllPaintingsFromDb,
+  getAllPaintersFromDb,
   getAllCategoriesForPaintingByPaintingId,
+  addPainterToDbQuery,
   getPainterName,
 } = require("../db/queries");
 
@@ -16,7 +20,11 @@ async function getAllPaintings(req, res, next) {
 }
 
 async function getAllPainters(req, res, next) {
-  await res.render("pages/allpainters", { painters, title: "All Painters" });
+  const painters = await getAllPaintersFromDb();
+  await res.render("pages/allpainters", {
+    painters: painters.rows,
+    title: "All Painters",
+  });
 }
 
 async function getPaintingById(req, res, next) {
@@ -33,8 +41,33 @@ async function getPaintingById(req, res, next) {
     await res.render("pages/painting", {
       painting,
       categories,
-      title: paintings[id].painting_name,
+      title: paintings[id].name,
     });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function addPainterToDb(req, res, next) {
+  try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.render("pages/createpainter", {
+        title: "Add New Painter",
+        values: req.body,
+        errors: errors.array(),
+      });
+    }
+    const { name, birth_year, death_year, image_url, description } = req.body;
+    await addPainterToDbQuery(
+      name,
+      birth_year,
+      death_year,
+      image_url,
+      description
+    );
+    return res.redirect("/painters");
   } catch (err) {
     next(err);
   }
@@ -45,4 +78,5 @@ module.exports = {
   getAllPaintings,
   getAllPainters,
   getPaintingById,
+  addPainterToDb,
 };

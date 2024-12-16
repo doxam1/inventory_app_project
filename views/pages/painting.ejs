@@ -15,13 +15,15 @@
                             <%= painting.name %>
                         </h2>
                         <p>
-                            <%= painting.description %>
+                            <%= painting.description || 'seems like that painting don\' t have a description.' %>
                         </p>
                         <div>
                             <% categories.forEach((category, index)=> { %>
                                 <span>
-                                    <%= category %>
-                                        <%= index < categories.length - 1 ? " |" : "" %>
+                                    <a href="">
+                                        <%= category %>
+                                    </a>
+                                    <%= index < categories.length - 1 ? " | " : "" %>
                                 </span>
                                 <% }) %>
                         </div>
