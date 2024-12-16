@@ -2,7 +2,7 @@ const paintings = [
   {
     id: 0,
     painting_name: "Melting Watch",
-    painter_id: 2,
+    painter_id: 1,
     year: 1954,
     painting_url:
       "https://www.dalipaintings.com/assets/img/paintings/the-melting-watch.jpg",
@@ -12,7 +12,7 @@ const paintings = [
   {
     id: 1,
     painting_name: "Café Terrace at Night",
-    painter_id: 1,
+    painter_id: 2,
     year: 1888,
     painting_url:
       "https://upload.wikimedia.org/wikipedia/commons/b/b0/Vincent_van_Gogh_%281853-1890%29_Caf%C3%A9terras_bij_nacht_%28place_du_Forum%29_Kr%C3%B6ller-M%C3%BCller_Museum_Otterlo_23-8-2016_13-35-40.JPG",
@@ -23,12 +23,12 @@ const paintings = [
 
 const painters = [
   {
-    id: 1,
+    id: 2,
     name: "Vincent van Gogh",
     url: "https://cdn.britannica.com/36/69636-050-81A93193/Self-Portrait-artist-panel-board-Vincent-van-Gogh-1887.jpg",
   },
   {
-    id: 2,
+    id: 1,
     name: "Salvador Dali",
     url: "https://www.galeries-bartoux.com/wp-content/uploads/2016/06/DALI-2-540x595.jpg",
   },

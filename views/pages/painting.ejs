@@ -5,18 +5,28 @@
     <body>
         <%- include('../partials/header.ejs') %>
             <div class="container">
-                <h2 style="text-align: center;">
-                    <%= painting.painting_name %>
-                </h2>
+
                 <div class="imgDescriptionFlex">
                     <div class="paintingImgContainer">
-                        <img src="<%= painting.painting_url %>" alt="">
+                        <img src="<%= painting.image_url %>" alt="">
                     </div>
                     <div class="description">
+                        <h2 style="text-align: center;">
+                            <%= painting.name %>
+                        </h2>
                         <p>
                             <%= painting.description %>
                         </p>
                         <div>
+                            <% categories.forEach((category, index)=> { %>
+                                <span>
+                                    <%= category %>
+                                        <%= index < categories.length - 1 ? " |" : "" %>
+                                </span>
+                                <% }) %>
+                        </div>
+                        <div>
+                            <br />
                             <button>Edit Details</button>
                             <button>Delete painting</button>
                         </div>

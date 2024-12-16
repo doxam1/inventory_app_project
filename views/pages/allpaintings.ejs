@@ -11,14 +11,14 @@
                     <div class="paintDiv">
                         <a href="paintings/<%= index %>">
                             <h3>
-                                <%= painting.painting_name %>
+                                <%= painting.name %>
                             </h3>
                         </a>
                         <h4>
-                            painter_id: <%= painting.painter_id %>, <%= painting.year %>
+                            <%= painting.painter_name %>, <%= painting.year %>
                         </h4>
-                        <div class="imgContainer"><img src="<%=painting.painting_url %>" alt="the painting"
-                                width="150px"></div>
+                        <div class="imgContainer"><img src="<%=painting.image_url %>" alt="the painting" width="150px">
+                        </div>
 
                     </div>
                     <% }) %>
