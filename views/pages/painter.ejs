@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head.ejs') %>
+
+    <body>
+        <%- include('../partials/header.ejs') %>
+            <div class="container">
+
+                <div class="imgDescriptionFlex">
+                    <div class="paintingImgContainer">
+                        <img src="<%= painter.image_url %>" alt="">
+                    </div>
+                    <div class="description">
+                        <h2 style="text-align: center;">
+                            <%= painter.name %>
+                        </h2>
+                        <p>
+                            <%= painter.description || 'seems like that painting don\' t have a description.' %>
+                        </p>
+                        <div>
+
+                        </div>
+                        <div>
+                            <br />
+                            <button>Edit Details</button>
+                            <button>Delete painter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%- include('../partials/relevantPaints.ejs', {paintings}) %>
+                <%- include('../partials/footer.ejs') %>
+    </body>
+
+
+</html>

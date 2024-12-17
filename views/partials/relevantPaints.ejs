@@ -1,0 +1,18 @@
+<div class="container allPaintings">
+    <% locals.paintings.forEach((painting, index)=> { %>
+
+        <div class="paintDiv">
+            <a href="/paintings/<%= index %>">
+                <h3>
+                    <%= painting.name %>
+                </h3>
+            </a>
+            <h4>
+                <%= painting.year %>
+            </h4>
+            <div class="imgContainer"><img src="<%=painting.image_url %>" alt="the painting" width="150px">
+            </div>
+
+        </div>
+        <% }) %>
+</div>

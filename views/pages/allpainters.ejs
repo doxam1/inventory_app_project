@@ -9,13 +9,17 @@
                 <% locals.painters.forEach((painter, index)=> { %>
                     <div class="painterDiv">
                         <h3>
-                            <%= painter.name %>
+                            <a href="/painters/<%= index+1 %>">
+                                <%= painter.name %>
+                            </a>
                         </h3>
                         <div class="imgContainer"><img src="<%= painter.image_url %>" alt="the painter" width="150px">
                         </div>
                     </div>
                     <% }) %>
             </div>
+            <%- include('../partials/footer.ejs') %>
     </body>
+
 
 </html>

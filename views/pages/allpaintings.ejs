@@ -9,7 +9,7 @@
                 <% locals.paintings.forEach((painting, index)=> { %>
 
                     <div class="paintDiv">
-                        <a href="paintings/<%= index %>">
+                        <a href="/paintings/<%= index %>">
                             <h3>
                                 <%= painting.name %>
                             </h3>
@@ -23,6 +23,8 @@
                     </div>
                     <% }) %>
             </div>
+            <%- include('../partials/footer.ejs') %>
     </body>
+
 
 </html>

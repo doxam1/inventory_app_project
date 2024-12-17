@@ -20,7 +20,7 @@
                         <div>
                             <% categories.forEach((category, index)=> { %>
                                 <span>
-                                    <a href="">
+                                    <a href="/paintings/<%= category.replace(/\s/g, '') %>">
                                         <%= category %>
                                     </a>
                                     <%= index < categories.length - 1 ? " | " : "" %>
@@ -35,7 +35,8 @@
                     </div>
                 </div>
             </div>
-
+            <%- include('../partials/footer.ejs') %>
     </body>
+
 
 </html>

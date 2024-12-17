@@ -3,10 +3,13 @@
 const { validationResult } = require("express-validator");
 
 const {
+  getAllCategories,
   getAllPaintingsFromDb,
   getAllPaintersFromDb,
   getAllCategoriesForPaintingByPaintingId,
   addPainterToDbQuery,
+  getPaintingsOfPainterQuery,
+  getAllPaintingsByCategory,
   getPainterName,
 } = require("../db/queries");
 
@@ -27,6 +30,20 @@ async function getAllPainters(req, res, next) {
   });
 }
 
+async function getPaintingsByCategory(req, res, next) {
+  const categories = await getAllCategories();
+  const category = categories.find(
+    (category) => category.name.replace(/\s/g, "") == req.params.category
+  );
+  const category_id = category ? category.id : null;
+  if (category) {
+    const paintings = await getAllPaintingsByCategory(category_id);
+    await res.render("pages/category", { category: category.name, paintings });
+  } else {
+    next();
+  }
+}
+
 async function getPaintingById(req, res, next) {
   try {
     const { id } = req.params;
@@ -42,6 +59,22 @@ async function getPaintingById(req, res, next) {
       painting,
       categories,
       title: paintings[id].name,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function getPainterById(req, res, next) {
+  try {
+    const { id } = req.params;
+    const painters = await getAllPaintersFromDb();
+    const painter = painters.rows[parseInt(id) - 1];
+    const paintings = await getPaintingsOfPainterQuery(painter.name);
+    await res.render("pages/painter", {
+      title: painter.name,
+      painter,
+      paintings,
     });
   } catch (err) {
     next(err);
@@ -78,5 +111,7 @@ module.exports = {
   getAllPaintings,
   getAllPainters,
   getPaintingById,
+  getPainterById,
   addPainterToDb,
+  getPaintingsByCategory,
 };
