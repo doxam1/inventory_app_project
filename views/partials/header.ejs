@@ -1,8 +1,27 @@
-<div>
-    <ul class="menuList">
-        <li><a href="/">Home |</a></li>
-        <li><a href="/paintings">All paintings |</a></li>
-        <li><a href="/painters">All painters |</a></li>
-        <li><a href="">Admin Login</a></li>
-    </ul>
+<div class="menuByWidth">
+    <!-- <button type="button" class="menuBtn"> X </button> -->
+    <div class="hamburger menuBtn" id="hamburger-1">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+    </div>
+    <div class="menu">
+        <ul class="menuList">
+            <li><a href="/">Home |</a></li>
+            <li><a href="/paintings">All paintings |</a></li>
+            <li><a href="/painters">All painters |</a></li>
+            <li><a href="">Admin Login</a></li>
+        </ul>
+    </div>
 </div>
+
+<script>
+
+    const menuBtn = document.querySelector('.menuBtn');
+    menuBtn.addEventListener('click', () => {
+        const menu = document.querySelector('.menu');
+        menu.classList.toggle('open');
+        menuBtn.classList.toggle('is-active');
+
+    })
+</script>
