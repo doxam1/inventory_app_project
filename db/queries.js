@@ -40,9 +40,38 @@ async function addPainterToDbQuery(
   );
 }
 
+async function addPaintingToDbQuery(
+  name,
+  year,
+  image_url,
+  description,
+  painter_id,
+  categories
+) {
+  await pool.query(
+    "INSERT INTO paintings (name, year, image_url, description, painter_id) VALUES ($1, $2, $3, $4, $5)",
+    [name, year, image_url, description, painter_id]
+  );
+  for (const category of categories) {
+    // Get the painting ID
+    const result = await pool.query(
+      "SELECT id FROM paintings WHERE name = ($1)",
+      [name]
+    );
+    const paintingId = result.rows[0].id;
+
+    // Insert into painting_categories
+    await pool.query(
+      "INSERT INTO painting_categories (painting_id, category_id) VALUES ($1, $2)",
+      [paintingId, category]
+    );
+  }
+
+  return;
+}
 async function getPaintingsOfPainterQuery(painterName) {
   const { rows } = await pool.query(
-    "SELECT paintings.name, paintings.year, paintings.image_url FROM paintings JOIN painters ON paintings.painter_id = painters.id WHERE painters.name = ($1)",
+    "SELECT paintings.name, paintings.year, paintings.image_url, paintings.id FROM paintings JOIN painters ON paintings.painter_id = painters.id WHERE painters.name = ($1)",
     [painterName]
   );
   return rows;
@@ -55,7 +84,7 @@ async function getAllCategories() {
 
 async function getAllPaintingsByCategory(category_id) {
   const { rows } = await pool.query(
-    "SELECT paintings.name, paintings.year, paintings.image_url FROM paintings JOIN painting_categories AS pc ON paintings.id = pc.painting_id WHERE pc.category_id = ($1)",
+    "SELECT paintings.name, paintings.year, paintings.image_url, paintings.id FROM paintings JOIN painting_categories AS pc ON paintings.id = pc.painting_id WHERE pc.category_id = ($1)",
     [category_id]
   );
   // console.log(rows);
@@ -77,6 +106,7 @@ module.exports = {
   getPaintingsOfPainterQuery,
   getAllCategories,
   getAllPaintingsByCategory,
+  addPaintingToDbQuery,
   /*   getPainterName,
    */
 };

@@ -10,6 +10,7 @@ const {
   addPainterToDbQuery,
   getPaintingsOfPainterQuery,
   getAllPaintingsByCategory,
+  addPaintingToDbQuery,
   getPainterName,
 } = require("../db/queries");
 
@@ -38,7 +39,11 @@ async function getPaintingsByCategory(req, res, next) {
   const category_id = category ? category.id : null;
   if (category) {
     const paintings = await getAllPaintingsByCategory(category_id);
-    await res.render("pages/category", { category: category.name, paintings });
+    await res.render("pages/category", {
+      category: category.name,
+      paintings,
+      title: category.name,
+    });
   } else {
     next();
   }
@@ -81,6 +86,37 @@ async function getPainterById(req, res, next) {
   }
 }
 
+async function createPaintingGet(req, res, next) {
+  const painters = (await getAllPaintersFromDb()).rows;
+  const categories = await getAllCategories();
+  // console.log(categories);
+  // console.log(painters);
+  res.render("pages/createPainting", {
+    title: "Add new painting",
+    painters,
+    categories,
+  });
+}
+
+async function createPaintingPost(req, res, next) {
+  try {
+    const { name, year, image_url, description, painter_id, categories } =
+      req.body;
+    await addPaintingToDbQuery(
+      name,
+      year,
+      image_url,
+      description,
+      painter_id,
+      categories.map(Number)
+    );
+    return res.redirect("/paintings");
+  } catch (err) {
+    next(err);
+  }
+  // console.log(req.body /* .categories.map(Number) || [] */);
+}
+
 async function addPainterToDb(req, res, next) {
   try {
     const errors = validationResult(req);
@@ -114,4 +150,6 @@ module.exports = {
   getPainterById,
   addPainterToDb,
   getPaintingsByCategory,
+  createPaintingGet,
+  createPaintingPost,
 };

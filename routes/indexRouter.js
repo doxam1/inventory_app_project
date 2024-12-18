@@ -8,6 +8,8 @@ const {
   addPainterToDb,
   getPainterById,
   getPaintingsByCategory,
+  createPaintingGet,
+  createPaintingPost,
 } = require("../controllers/indexControllers");
 
 const express = require("express");
@@ -22,10 +24,13 @@ indexRouter.get("/paintings/:id", getPaintingById);
 indexRouter.get("/painters/:id", getPainterById);
 
 indexRouter.get("/createpainter", (req, res, next) => {
-  res.render("pages/createpainter", { title: "add new painter" });
+  res.render("pages/createpainter", { title: "Add new painter" });
 });
 
+indexRouter.get("/createpainting", createPaintingGet);
+
 indexRouter.post("/createpainter", painterValidation, addPainterToDb);
+indexRouter.post("/createpainting", createPaintingPost);
 
 module.exports = {
   indexRouter,
