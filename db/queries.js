@@ -197,6 +197,19 @@ async function updatePaintingInDb(
 //   }
 // }
 
+async function updatePainterInDb(
+  name,
+  birth_year,
+  death_year,
+  image_url,
+  description,
+  painter_id
+) {
+  return await pool.query(
+    "UPDATE painters SET name=$1, birth_year=$2, death_year=$3, image_url=$4, description=$5 WHERE painters.id = $6",
+    [name, birth_year, death_year, image_url, description, painter_id]
+  );
+}
 module.exports = {
   getAllPaintingsFromDb,
   getAllPaintersFromDb,
@@ -208,6 +221,7 @@ module.exports = {
   addPaintingToDbQuery,
   getPaintingByNameFromDb,
   updatePaintingInDb,
+  updatePainterInDb,
   /*   getPainterName,
    */
 };

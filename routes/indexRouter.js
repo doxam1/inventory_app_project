@@ -12,6 +12,8 @@ const {
   createPaintingPost,
   editPaintingGet,
   editPaintingPost,
+  editPainterPost,
+  editPainterGet,
 } = require("../controllers/indexControllers");
 
 const express = require("express");
@@ -36,6 +38,9 @@ indexRouter.post("/createpainting", createPaintingPost);
 
 indexRouter.get("/paintings/edit", editPaintingGet);
 indexRouter.post("/paintings/edit", editPaintingPost);
+
+indexRouter.get("/painters/edit", editPainterGet);
+indexRouter.post("/painters/edit", editPainterPost);
 
 module.exports = {
   indexRouter,

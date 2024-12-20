@@ -13,6 +13,7 @@ const {
   addPaintingToDbQuery,
   getPaintingByNameFromDb,
   updatePaintingInDb,
+  updatePainterInDb,
   getPainterName,
 } = require("../db/queries");
 
@@ -77,8 +78,9 @@ async function getPaintingById(req, res, next) {
 async function getPainterById(req, res, next) {
   try {
     const { id } = req.params;
-    const painters = await getAllPaintersFromDb();
-    const painter = painters.rows[parseInt(id) - 1];
+    if (id == "edit") return next();
+    const painters = (await getAllPaintersFromDb()).rows;
+    const painter = painters.filter((painter) => painter.id == id)[0];
     const paintings = await getPaintingsOfPainterQuery(painter.name);
     await res.render("pages/painter", {
       title: painter.name,
@@ -186,6 +188,34 @@ async function editPaintingPost(req, res, next) {
   //build validation.
 }
 
+async function editPainterGet(req, res, next) {
+  const { name } = req.query;
+  const AllPainters = (await getAllPaintersFromDb()).rows;
+
+  const painter = AllPainters.filter((artist) => artist.name == name);
+
+  res.render("pages/editpainter", {
+    title: painter[0].name,
+    painter: painter[0],
+  });
+}
+
+async function editPainterPost(req, res, next) {
+  const { name, birth_year, death_year, image_url, description, painter_id } =
+    req.body;
+  await updatePainterInDb(
+    name,
+    birth_year,
+    death_year,
+    image_url,
+    description,
+    painter_id
+  );
+
+  res.redirect(`/painters/${painter_id}`);
+  //build a query for updating painters table. (UPDATE painters ....)
+}
+
 module.exports = {
   getIndex,
   getAllPaintings,
@@ -198,4 +228,6 @@ module.exports = {
   createPaintingPost,
   editPaintingGet,
   editPaintingPost,
+  editPainterPost,
+  editPainterGet,
 };

@@ -9,7 +9,7 @@
                 <% locals.painters.forEach((painter, index)=> { %>
                     <div class="painterDiv">
                         <h3>
-                            <a href="/painters/<%= index+1 %>">
+                            <a href="/painters/<%= painter.id %>">
                                 <%= painter.name %>
                             </a>
                         </h3>
