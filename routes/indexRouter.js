@@ -10,6 +10,8 @@ const {
   getPaintingsByCategory,
   createPaintingGet,
   createPaintingPost,
+  editPaintingGet,
+  editPaintingPost,
 } = require("../controllers/indexControllers");
 
 const express = require("express");
@@ -31,6 +33,9 @@ indexRouter.get("/createpainting", createPaintingGet);
 
 indexRouter.post("/createpainter", painterValidation, addPainterToDb);
 indexRouter.post("/createpainting", createPaintingPost);
+
+indexRouter.get("/paintings/edit", editPaintingGet);
+indexRouter.post("/paintings/edit", editPaintingPost);
 
 module.exports = {
   indexRouter,

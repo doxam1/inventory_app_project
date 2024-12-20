@@ -11,6 +11,8 @@ const {
   getPaintingsOfPainterQuery,
   getAllPaintingsByCategory,
   addPaintingToDbQuery,
+  getPaintingByNameFromDb,
+  updatePaintingInDb,
   getPainterName,
 } = require("../db/queries");
 
@@ -52,18 +54,20 @@ async function getPaintingsByCategory(req, res, next) {
 async function getPaintingById(req, res, next) {
   try {
     const { id } = req.params;
+
+    if (id == "edit") return next(); // when i go to edit the painting, i want the next middleware to take place.
+
     const paintings = await getAllPaintingsFromDb();
 
-    // i'm adding 1, because the paintings array starts from 0 and the id in the DB starts from 1.
     const categories = await getAllCategoriesForPaintingByPaintingId(
-      parseInt(id, 10) + 1
+      parseInt(id, 10)
     );
 
-    const painting = paintings[id];
+    const painting = paintings.filter((painting) => painting.id == id);
     await res.render("pages/painting", {
-      painting,
+      painting: painting[0],
       categories,
-      title: paintings[id].name,
+      title: painting[0].name,
     });
   } catch (err) {
     next(err);
@@ -142,6 +146,46 @@ async function addPainterToDb(req, res, next) {
   }
 }
 
+async function editPaintingGet(req, res, next) {
+  const { name } = req.query;
+
+  const painting = await getPaintingByNameFromDb(name);
+
+  const AllCategories = await getAllCategories();
+
+  const checkedCategories = await getAllCategoriesForPaintingByPaintingId(
+    parseInt(painting[0].id)
+  );
+
+  const allpainters = (await getAllPaintersFromDb()).rows;
+
+  res.render("pages/editpainting", {
+    painters: allpainters,
+    painting: painting[0],
+    checkedCategories,
+    categories: AllCategories,
+    title: "edit " + name,
+  });
+}
+
+async function editPaintingPost(req, res, next) {
+  const { name, year, image_url, painter_id, description, id, categories } =
+    req.body;
+
+  await updatePaintingInDb(
+    name,
+    year,
+    image_url,
+    painter_id,
+    description,
+    categories.map(Number),
+    Number(id)
+  );
+
+  res.redirect(`/paintings/${id}`);
+  //build validation.
+}
+
 module.exports = {
   getIndex,
   getAllPaintings,
@@ -152,4 +196,6 @@ module.exports = {
   getPaintingsByCategory,
   createPaintingGet,
   createPaintingPost,
+  editPaintingGet,
+  editPaintingPost,
 };
