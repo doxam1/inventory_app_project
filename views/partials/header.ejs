@@ -10,12 +10,16 @@
             <li><a href="/">Home </a></li>
             <li><a href="/paintings">All paintings</a></li>
             <li><a href="/painters">All painters </a></li>
-            <li><a href="">Admin Login</a></li>
+            <% if (locals.user && locals.user.username=='admin' ) { %>
+                <li><a href="/log-out">Log-out</a></li>
+                <% } else { %>
+                    <li><a href="/log-in">Admin Login</a></li>
+                    <% } %>
         </ul>
         <div class="adminMenu">
             <ul class="menuList">
                 <li><a href="/createpainter">Add painter </a></li>
-                <li><a href="/createpainting">Add paint</a></li>
+                <li><a href="/createpainting">Add painting</a></li>
             </ul>
         </div>
     </div>

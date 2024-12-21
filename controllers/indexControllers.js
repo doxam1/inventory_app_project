@@ -18,12 +18,16 @@ const {
 } = require("../db/queries");
 
 async function getIndex(req, res, next) {
-  res.render("pages/index", { title: "Virtual Museum" });
+  res.render("pages/index", { title: "Virtual Museum", user: req.user });
 }
 
 async function getAllPaintings(req, res, next) {
   const paintings = await getAllPaintingsFromDb();
-  res.render("pages/allpaintings", { paintings, title: "All Paintings" });
+  res.render("pages/allpaintings", {
+    paintings,
+    title: "All Paintings",
+    user: req.user,
+  });
 }
 
 async function getAllPainters(req, res, next) {
@@ -31,6 +35,7 @@ async function getAllPainters(req, res, next) {
   await res.render("pages/allpainters", {
     painters: painters.rows,
     title: "All Painters",
+    user: req.user,
   });
 }
 
@@ -46,6 +51,7 @@ async function getPaintingsByCategory(req, res, next) {
       category: category.name,
       paintings,
       title: category.name,
+      user: req.user,
     });
   } else {
     next();
@@ -69,6 +75,7 @@ async function getPaintingById(req, res, next) {
       painting: painting[0],
       categories,
       title: painting[0].name,
+      user: req.user,
     });
   } catch (err) {
     next(err);
@@ -86,6 +93,7 @@ async function getPainterById(req, res, next) {
       title: painter.name,
       painter,
       paintings,
+      user: req.user,
     });
   } catch (err) {
     next(err);
@@ -101,10 +109,14 @@ async function createPaintingGet(req, res, next) {
     title: "Add new painting",
     painters,
     categories,
+    user: req.user,
   });
 }
 
 async function createPaintingPost(req, res, next) {
+  if (!req.user || req.user.username !== "admin") {
+    return next(new Error("Only admin can create a new painting."));
+  }
   try {
     const { name, year, image_url, description, painter_id, categories } =
       req.body;
@@ -124,6 +136,9 @@ async function createPaintingPost(req, res, next) {
 }
 
 async function addPainterToDb(req, res, next) {
+  if (!req.user || req.user.username !== "admin") {
+    return next(new Error("Only admin can create a new painter."));
+  }
   try {
     const errors = validationResult(req);
 
@@ -132,6 +147,7 @@ async function addPainterToDb(req, res, next) {
         title: "Add New Painter",
         values: req.body,
         errors: errors.array(),
+        user: req.user,
       });
     }
     const { name, birth_year, death_year, image_url, description } = req.body;
@@ -167,10 +183,14 @@ async function editPaintingGet(req, res, next) {
     checkedCategories,
     categories: AllCategories,
     title: "edit " + name,
+    user: req.user,
   });
 }
 
 async function editPaintingPost(req, res, next) {
+  if (!req.user || req.user.username !== "admin") {
+    return next(new Error("Only admin can edit paintings details."));
+  }
   const { name, year, image_url, painter_id, description, id, categories } =
     req.body;
 
@@ -197,10 +217,14 @@ async function editPainterGet(req, res, next) {
   res.render("pages/editpainter", {
     title: painter[0].name,
     painter: painter[0],
+    user: req.user,
   });
 }
 
 async function editPainterPost(req, res, next) {
+  if (!req.user || req.user.username !== "admin") {
+    return next(new Error("Only admin can edit painters details."));
+  }
   const { name, birth_year, death_year, image_url, description, painter_id } =
     req.body;
   await updatePainterInDb(
