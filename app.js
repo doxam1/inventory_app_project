@@ -8,7 +8,18 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(
+  session({
+    store: new (require("connect-pg-simple")(session))({
+      store: pool,
+    }),
+    secret: "cats",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
+    // Insert express-session options here
+  })
+);
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
